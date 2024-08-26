@@ -1,0 +1,87 @@
+<texts>
+    <text id="info">
+        <![CDATA[
+        <html><head><meta name="qrichtext" content="1" /><style type="text/css">
+        p, li { white-space: pre-wrap; }
+        </style></head><body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+        <br  />
+        <br  />
+        <br  />
+        <br  />
+        <p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:12pt; font-weight:600;">Дипломний проект</span></p>
+        <p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:12pt;">на тему &quot;Розробка системи хешування </span></p>
+        <p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:12pt;">і розподіленого зберігання інформації&quot;</span></p>
+        <p align="center" style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;"><br /></p>
+        <br  />
+        <br  />
+        <br  />
+        <br  />
+        <br  />
+        <br  />
+        <br  />
+        <br  />
+        <p align="right" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:12pt;">Виконав студентгрупи ІТ-31сп</span></p>
+        <p align="right" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:12pt;">спеціальності 126 &quot;Інформаційні </span></p>
+        <p align="right" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:12pt;">системи та технології&quot;</span></p>
+        <p align="right" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:12pt; font-weight:600;">Масняк Богдан Володимирович</span></p></body></html>
+        ]]>
+    </text>
+
+    <text id="deFrag">
+        <![CDATA[
+        <html><head/><body><p align="center">Дефрагментація </p></body></html>"
+        ]]>
+    </text>
+
+    <text id="frag">
+        <![CDATA[
+        <html><head/><body><p align="center">Фрагментація </p></body></html>"
+        ]]>
+    </text>
+
+    <text id="style_slider">
+    <![CDATA[
+    QSlider::handle:horizontal {
+        background-color: red;
+    }
+
+    QSlider::handle:pressed {
+        background-color: gray;
+    }
+    ]]>
+    </text>
+
+    <text id="style_radio_button">
+    <![CDATA[
+    QRadioButton::indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 5px;
+        border: 2px solid gray;
+    }
+
+    QRadioButton::indicator:checked {
+        border: 2px solid red;
+    }
+    ]]>
+    </text>
+
+    <text id="style_push_button_main">
+    <![CDATA[
+    QPushButton {
+        font-size: 16px;
+        border-radius: 5px;
+        border-color: red;
+        border-style: solid;
+        border-width: 2px;
+        background-color: white;
+        color: black;
+        }
+
+        QPushButton:hover {
+        background-color: #f54242;
+        color: white;
+        }
+    ]]>
+    </text>
+</texts>
