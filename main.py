@@ -19,7 +19,7 @@ class MainWindow(QWidget):
         main_layout.addWidget(self.stacked_widget)
         self.setLayout(main_layout)
 
-        self.setWindowTitle('Multi-page Application')
+        self.setWindowTitle('Масняк Б. ІТ-31сп Дипломна робота')
         self.setFixedSize(960, 660)
         centering(self)
         self.show()
@@ -38,11 +38,12 @@ class MainWindow(QWidget):
     def show_start_page(self):
         self.page_manager.show_start_page()
 
-    def showPage2(self):
-        self.page_manager.showPage2()
+    def show_de_frag_page(self):
+        self.page_manager.show_de_frag_page()
 
     def show_frag_page(self):
         self.page_manager.show_frag_page()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

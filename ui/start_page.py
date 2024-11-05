@@ -50,7 +50,7 @@ def setup_ui(self, page):
     self.text_deFrag.setFont(font)
     self.text_deFrag.setLayoutDirection(QtCore.Qt.LeftToRight)
 
-    self.frag.clicked.connect(self.parent.showPage2)
+    self.frag.clicked.connect(self.parent.show_de_frag_page)
     self.defrag.clicked.connect(self.parent.show_frag_page)
 
     self.info.clicked.connect(self.open_info_widget)

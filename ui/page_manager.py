@@ -52,7 +52,7 @@ class PageManager:
     def show_start_page(self):
         self.parent.stacked_widget.setCurrentIndex(0)
 
-    def showPage2(self):
+    def show_de_frag_page(self):
         self.parent.stacked_widget.setCurrentIndex(1)
 
     def show_frag_page(self):
