@@ -1,4 +1,6 @@
 from ui.imports_ui import *
+from bll.password import *
+
 
 def open_password_form(self):
     self.password_window = QtWidgets.QMainWindow()
@@ -59,7 +61,6 @@ def open_password_form(self):
     self.push_button_back.setStyleSheet(root.find(".//text[@id='style_push_button_main']").text.strip())
     self.push_button_back.clicked.connect(self.password_window.close)  # Correct way to connect to close method
 
-
     button_layout.addSpacing(83)  # Spacing between buttons
 
     self.push_button_submit = QtWidgets.QPushButton("Далі")
@@ -73,8 +74,17 @@ def open_password_form(self):
     self.password_line.setEchoMode(QtWidgets.QLineEdit.Password)
     self.confirm_password_line.setEchoMode(QtWidgets.QLineEdit.Password)
     self.eye.clicked.connect(lambda: toggle_password_visibility(self))
+    self.file_password.clicked.connect(lambda: password_in_file(self))
 
     self.password_window.show()
+
+
+def password_in_file(self):
+    pass_file = select_pass_file()
+    if pass_file != "None":
+        self.password_line.setText(pass_file)
+        self.confirm_password_line.setText(pass_file)
+
 
 def toggle_password_visibility(self):
     current_mode = self.password_line.echoMode()

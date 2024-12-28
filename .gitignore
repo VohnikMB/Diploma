@@ -1,6 +1,7 @@
 /.venv/
 /TestZone/
-*.iml
-.idea/
-*.qrc
 /QT designer/
+.idea/
+*.iml
+*.qrc
+*.pyc
