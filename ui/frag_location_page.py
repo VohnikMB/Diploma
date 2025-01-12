@@ -1,5 +1,6 @@
 from ui.imports_ui import *
 from bll.save_files.divide_function import *
+from bll.save_files.save_divide import save_file
 
 
 def create_frag_location_page(parent, slider, hash_type, data, file_name):
@@ -7,7 +8,9 @@ def create_frag_location_page(parent, slider, hash_type, data, file_name):
     push_button_forward = QtWidgets.QPushButton(page)
     push_button_forward.setGeometry(QtCore.QRect(730, 560, 141, 51))
     push_button_forward.setObjectName("push_button_forward")
-    push_button_forward.setText("Далі")
+    push_button_forward.setText("Готово")
+    push_button_forward.setStyleSheet(root.find(".//text[@id='style_push_button_start_frag']").text.strip())
+    push_button_forward.clicked.connect(lambda: end_fun())
 
     push_button_back = QtWidgets.QPushButton(page)
     push_button_back.setGeometry(QtCore.QRect(130, 560, 141, 51))
@@ -18,7 +21,6 @@ def create_frag_location_page(parent, slider, hash_type, data, file_name):
 
     data_divide = divide_data(data, slider)
     files_name = divide_files_name(slider, hash_type, file_name)
-
     location_fields = []
     for i in range(slider):
         location_field = QtWidgets.QLineEdit(page)
@@ -38,17 +40,29 @@ def create_frag_location_page(parent, slider, hash_type, data, file_name):
         location_button.clicked.connect(lambda: open_file_dialog(i))
         location_buttons.append(location_button)
 
-    def open_file_dialog(index):
-        """Функція для відкриття діалогу збереження окремого фрагменту."""
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        file_path, _ = QFileDialog.getSaveFileName(
-            page,
-            "Виберіть місце для збереження фрагменту",
-            f"save/{files_name[index]}",
-            "All Files (*)",
-            options=options,
-        )
-        if file_path:
-            location_fields[index].setText(file_path)
+        def open_file_dialog(index):
+            """Функція для відкриття діалогу збереження окремого фрагменту."""
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            file_path, _ = QFileDialog.getSaveFileName(
+                page,
+                "Виберіть місце для збереження фрагменту",
+                f"save/{files_name[index]}",
+                "All Files (*)",
+                options=options,
+            )
+            if file_path:
+                location_fields[index].setText(file_path)
+
+    def end_fun():
+        """Фінальна функція збереження."""
+        files_location = re_read(range(slider))
+        if all(files_location) and save_file(range(slider), data_divide, files_location):
+            parent.show_start_page()
+        else:
+            print("Помилка: один або більше шляхів є недійсними.")
+
+    def re_read(index_range):
+        return [location_fields[i].text() for i in index_range]
+
     return page

@@ -1,4 +1,5 @@
 /.venv/
+/save/
 /TestZone/
 /QT designer/
 .idea/
