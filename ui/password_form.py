@@ -1,8 +1,7 @@
-from ui.imports_ui import *
-from bll.password import *
+from bll.selecter.password import *
 
 
-def open_password_form(self):
+def open_password_form(self, callback):
     self.password_window = QtWidgets.QMainWindow()
     self.password_window.setWindowTitle('Enter Password')
     self.password_window.setFixedSize(420, 235)
@@ -59,7 +58,7 @@ def open_password_form(self):
     self.push_button_back.setFixedSize(141, 51)
     button_layout.addWidget(self.push_button_back)
     self.push_button_back.setStyleSheet(root.find(".//text[@id='style_push_button_main']").text.strip())
-    self.push_button_back.clicked.connect(self.password_window.close)  # Correct way to connect to close method
+    self.push_button_back.clicked.connect(self.password_window.close)
 
     button_layout.addSpacing(83)  # Spacing between buttons
 
@@ -67,7 +66,7 @@ def open_password_form(self):
     self.push_button_submit.setFixedSize(141, 51)
     button_layout.addWidget(self.push_button_submit)
     self.push_button_submit.setStyleSheet(root.find(".//text[@id='style_push_button_start_frag_NA']").text.strip())
-
+    self.push_button_submit.setEnabled(False)
     button_layout.addStretch(10)  # Add stretch to balance the spacing on both sides
 
     layout.addLayout(button_layout)  # Add this layout to the main vertical layout
@@ -75,13 +74,20 @@ def open_password_form(self):
     self.confirm_password_line.setEchoMode(QtWidgets.QLineEdit.Password)
     self.eye.clicked.connect(lambda: toggle_password_visibility(self))
     self.file_password.clicked.connect(lambda: password_in_file(self))
-
+    self.password_line.textChanged.connect(lambda: check_password_match(self))
+    self.confirm_password_line.textChanged.connect(lambda: check_password_match(self))
+    self.push_button_submit.clicked.connect(lambda: submit_password(self, callback))
     self.password_window.show()
 
 
+def submit_password(self, callback):
+    callback(self.password_line.text())  # Pass the password to the callback
+    self.password_window.close()
+
+
 def password_in_file(self):
-    pass_file = select_pass_file()
-    if pass_file != "None":
+    pass_file, bool_info = select_pass_file()
+    if bool_info:
         self.password_line.setText(pass_file)
         self.confirm_password_line.setText(pass_file)
 
@@ -95,10 +101,13 @@ def toggle_password_visibility(self):
         self.password_line.setEchoMode(QtWidgets.QLineEdit.Password)
         self.confirm_password_line.setEchoMode(QtWidgets.QLineEdit.Password)
 
-# Function to test the form
-if __name__ == '__main__':
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    window = QtWidgets.QMainWindow()
-    open_password_form(window)
-    sys.exit(app.exec_())
+
+def check_password_match(self):
+    password = self.password_line.text()
+    confirm_password = self.confirm_password_line.text()
+    if password == confirm_password:
+        self.push_button_submit.setStyleSheet(root.find(".//text[@id='style_push_button_start_frag']").text.strip())
+        self.push_button_submit.setEnabled(True)
+    else:
+        self.push_button_submit.setEnabled(False)
+        self.push_button_submit.setStyleSheet(root.find(".//text[@id='style_push_button_start_frag_NA']").text.strip())

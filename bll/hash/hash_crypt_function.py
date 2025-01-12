@@ -2,6 +2,7 @@ import base64
 import hashlib
 from cryptography.fernet import Fernet
 
+
 def _generate_fernet_key_from_password(password):
     # Створення хешу SHA-256 з паролю
     hash = hashlib.sha256(password.encode()).digest()
@@ -34,8 +35,7 @@ def encrypt_data(data, password, type, salt):
 
     # Шифрування даних
     cipher_suite = Fernet(key)
-    data_bytes = data.encode('utf-8')
-    encrypted_data = cipher_suite.encrypt(data_bytes)
+    encrypted_data = cipher_suite.encrypt(data)
     return encrypted_data
 
 def decrypt_data(encrypted_data, password, type, salt=''):

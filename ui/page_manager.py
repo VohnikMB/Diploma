@@ -3,11 +3,13 @@ from ui.imports_ui import *
 from .frag_page import create_frag_page
 from .start_page import setup_ui
 from .info_widgets import open_info_widget
-
+from .frag_location_page import create_frag_location_page
 
 class PageManager:
     def __init__(self, parent):
         self.parent = parent
+        self.current_frag_location_page = None
+
 
     def start_page(self):
         page = QWidget()
@@ -49,6 +51,14 @@ class PageManager:
     def create_frag_page(self):
         return create_frag_page(self.parent)
 
+    def create_frag_location_page(self, slider_value, hash_type, data, file_name):
+        if self.current_frag_location_page:
+            self.parent.stacked_widget.removeWidget(self.current_frag_location_page)
+            self.current_frag_location_page.deleteLater()
+        self.current_frag_location_page = create_frag_location_page(self.parent, slider_value, hash_type, data, file_name)
+        self.parent.stacked_widget.addWidget(self.current_frag_location_page)
+        return self.current_frag_location_page
+
     def show_start_page(self):
         self.parent.stacked_widget.setCurrentIndex(0)
 
@@ -57,3 +67,7 @@ class PageManager:
 
     def show_frag_page(self):
         self.parent.stacked_widget.setCurrentIndex(2)
+
+    def show_frag_location_page(self, slider_value, hash_type, data, file_name):
+        self.create_frag_location_page(slider_value, hash_type, data, file_name)
+        self.parent.stacked_widget.setCurrentWidget(self.current_frag_location_page)

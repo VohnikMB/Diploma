@@ -1,12 +1,13 @@
-from ui.imports_ui import *
-from bll.select_file import *
+from bll.selecter.select_file import *
 from bll.hash.hash_crypt_function import *
 from ui.password_form import *
+from ui.imports_ui import *
 
 
 def create_frag_page(parent):
     page = QtWidgets.QWidget(parent)
-    encrypted_data = None  # Initialize a variable to store the encrypted data
+    file_content = None
+    file_name = None
     type_hash = "md5"
 
     # Додаємо зображення
@@ -76,13 +77,13 @@ def create_frag_page(parent):
     md5_radio_button.toggled.connect(lambda: radio_button_click("md5", md5_radio_button.isChecked()))
     salt_radio_button.toggled.connect(lambda: radio_button_click("salt", salt_radio_button.isChecked()))
 
-    # Додаємо поле введення для "сіль"
     salt_line = QtWidgets.QLineEdit(page)
     salt_line.setGeometry(QtCore.QRect(530, 290, 151, 31))
     salt_line.setText("1111")
     salt_line.setStyleSheet("border: none;")
     salt_line.setObjectName("salt_line")
     salt_line.setEnabled(False)
+    push_button_frag.setEnabled(False)
 
     def radio_button_click(selected_type, is_checked):
         nonlocal type_hash
@@ -94,31 +95,17 @@ def create_frag_page(parent):
         else:
             salt_line.setEnabled(False)
 
-    def check_and_style_button():
-        print(f"Current select value: {select}")  # Додаємо виведення значення змінної select
-        if select:
-            print("Applying selected style.")  # Додаємо перевірку
-            push_button_frag.setStyleSheet(root.find(".//text[@id='style_push_button_start_frag']").text.strip())
-        else:
-            print("Applying not selected style.")  # Додаємо перевірку
-            push_button_frag.setStyleSheet(root.find(".//text[@id='style_push_button_start_frag_NA']").text.strip())
-
-        push_button_frag.update()  # Примусово оновлюємо кнопку
-        push_button_frag.repaint()  # Примусово перерендерюємо
-
     def encrypt_file_content():
-        global select  # Використовуємо глобальну змінну select
-        nonlocal encrypted_data  # Access the outer scope variable
-        file_content = open_file_dialog()  # Після цього select стає True або False
+        nonlocal file_content
+        nonlocal file_name
+        file_content, file_name, bool_info = open_file_dialog()
+        if bool_info:  # Якщо файл обрано, продовжуємо
+            push_button_frag.setStyleSheet(root.find(".//text[@id='style_push_button_start_frag']").text.strip())
+            push_button_frag.setEnabled(True)
 
-        # Оновлюємо стиль кнопки одразу після вибору файлу
-        check_and_style_button()  # Викликаємо функцію для перевірки стилю одразу після вибору файлу
-
-        if file_content != "None":  # Якщо файл обрано, продовжуємо
-            encrypted_data = encrypt_data(file_content, "40002", type_hash, salt_line.text())
-            print(encrypted_data)
         else:
-            print("No file selected")
+            push_button_frag.setStyleSheet(root.find(".//text[@id='style_push_button_start_frag_NA']").text.strip())
+            push_button_frag.setEnabled(False)
 
     def decrypt_data_content():
         if encrypted_data is not None:
@@ -128,13 +115,12 @@ def create_frag_page(parent):
         else:
             print("No encrypted data available for decryption.")
 
+    def start_encryption(password):
+        encrypted_data = encrypt_data(file_content, password, type_hash, salt_line.text())
+        parent.show_frag_location_page(slider.value(), type_hash, encrypted_data, file_name)
 
-
-    choose_file_img.clicked.connect(encrypt_file_content)  # Pass the function reference without parentheses
-
-    push_button_frag.clicked.connect(lambda: open_password_form(page))
-    push_button_main.clicked.connect(parent.show_start_page)  # Navigate to the start page
+    choose_file_img.clicked.connect(encrypt_file_content)
+    push_button_frag.clicked.connect(lambda: open_password_form(page, start_encryption))
+    push_button_main.clicked.connect(parent.show_start_page)
 
     return page
-
-
