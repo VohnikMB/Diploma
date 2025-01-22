@@ -1,5 +1,25 @@
 from ui.imports_ui import *
-from bll.selecter.select_files import *
+from bll.selecter.select_files import open_file_dialog
+
+"""
+setup_ui.py. Файл, що містить функцію для створення графічного інтерфейсу головної сторінки програми.
+
+Елементи Qt:
+    - ClickableLabel:
+        - self.de_frag: Іконка для переходу до сторінки дешифрування.
+        - self.frag: Іконка для переходу до сторінки фрагментації.
+        - self.info: Іконка для відкриття інформаційного вікна.
+        - self.language: Іконка зміни мови.
+    - QLabel:
+        - self.text_frag: Текстовий підпис для сторінки фрагментації.
+        - self.text_deFrag: Текстовий підпис для сторінки дешифрування.
+
+Функції:
+    - setup_ui: Налаштовує головну сторінку інтерфейсу PyQt5 з інтерактивними елементами.
+    - de_cript_page: Відкриває діалог вибору файлів для дешифрування та перемикає сторінку.
+    - self.frag.clicked: Переходить до сторінки фрагментації.
+    - self.info.clicked: Відкриває інформаційне вікно.
+"""
 
 
 def setup_ui(self, page):
@@ -28,11 +48,11 @@ def setup_ui(self, page):
     self.frag.setText("")
     self.frag.setObjectName("frag")
 
-    self.setting = QLabel(self.central_widget)
-    self.setting.setGeometry(QtCore.QRect(875, 10, 41, 41))
-    self.setting.setStyleSheet("image: url(ui/images/setting.png);")
-    self.setting.setText("")
-    self.setting.setObjectName("setting")
+    self.language = ClickableLabel(self.central_widget)
+    self.language.setGeometry(QtCore.QRect(875, 10, 41, 41))
+    self.language.setStyleSheet("image: url(ui/images/setting.png);")
+    self.language.setText("")
+    self.language.setObjectName("setting")
 
     self.info = ClickableLabel(self.central_widget)
     self.info.setGeometry(QtCore.QRect(870, 590, 41, 41))

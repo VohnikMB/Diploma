@@ -1,5 +1,26 @@
 from ui.imports_ui import *
 
+"""
+info_widget.py. Модуль, що містить функцію для створення та відображення інформаційного вікна програми.
+
+Елементи Qt:
+    - QMainWindow:
+        - info_window: Головне вікно для відображення інформації.
+    - QTextEdit:
+        - textEdit: Віджет для відображення текстової інформації у форматі HTML.
+    - QVBoxLayout:
+        - layout: Основний вертикальний макет вмісту вікна.
+    - QHBoxLayout:
+        - icon_layout: Горизонтальний макет для іконок соціальних мереж.
+    - ClickableLabel:
+        - git: Іконка для переходу на GitHub.
+        - linkedin: Іконка для переходу на LinkedIn.
+Функції:
+    - open_info_widget: Відображає інформаційне вікно з текстом і посиланнями на соціальні мережі.
+    - open_webpage_git: Відкриває GitHub-профіль у веб-браузері.
+    - open_webpage_link: Відкриває LinkedIn-профіль у веб-браузері.
+"""
+
 
 def open_info_widget(self):
     self.info_window = QtWidgets.QMainWindow()
@@ -47,14 +68,8 @@ def open_info_widget(self):
 
 
 def open_webpage_git():
-    try:
-        webbrowser.open("https://github.com/VohnikMB/Diploma", new=0, autoraise=True)
-    except Exception as e:
-        print(f"Error opening GitHub: {e}")
+    webbrowser.open("https://github.com/VohnikMB/Diploma", new=0, autoraise=True)
 
 
 def open_webpage_link():
-    try:
-        webbrowser.open("https://www.linkedin.com/in/vohnik/", new=0, autoraise=True)
-    except Exception as e:
-        print(f"Error opening LinkedIn: {e}")
+    webbrowser.open("https://www.linkedin.com/in/vohnik/", new=0, autoraise=True)

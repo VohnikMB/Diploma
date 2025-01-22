@@ -1,20 +1,22 @@
-from ui.imports_ui import *
+from bll.bll_imports import *
+
+"""
+select_files.py. Файл, що містить функцію для вибору файлів.
+
+Функція:
+    - open_file_dialog: Відкриває діалогове вікно для вибору одного або кількох файлів, повертає список вибраних файлів.
+"""
 
 
 def open_file_dialog():
-    # Відкриття діалогу для вибору файлів
     files, _ = QtWidgets.QFileDialog.getOpenFileNames(
         None,
-        "Виберіть файли",  # Заголовок діалогу
-        "",  # Початкова директорія
-        'All Files (*)'  # Фільтр файлів
+        "Виберіть файли",
+        "",
+        'All Files (*)'
     )
-
-    # Ініціалізація змінної для зберігання вмісту файлів
-    # file_content = b""  # Порожній байтовий об'єкт
     file_names = []
     if files:
-        # Читання вмісту кожного файлу
         for file_path in files:
             file_names.append(file_path)
         return file_names, True

@@ -1,3 +1,5 @@
+"""Файл для імпортування спільних елементів ui"""
+
 from xml.etree import ElementTree
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout,
                              QStackedWidget, QHBoxLayout, QLabel, QPushButton, QDesktopWidget, QFileDialog)

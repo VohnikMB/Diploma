@@ -1,7 +1,30 @@
 from ui.imports_ui import *
-from ui.password_salt_form import *
+from ui.password_salt_form import open_password_salt_form
 from bll.save_files.save_decrypted import *
 from bll.hash.hash_crypt_function import decrypt_data
+
+"""
+create_de_frag_page.py. Файл, що містить функції для створення сторінки дешифрування.
+
+Елементи Qt:
+    - QPushButton:
+        - push_button_forward: Кнопка "Далі", активується за умови заповнення щонайменше двох полів.
+        - push_button_back: Кнопка "Назад", повертає на початкову сторінку.
+    - QLineEdit:
+        - location_fields: Поля для введення шляхів до шифрованих файлів (до 8 полів).
+    - QRadioButton:
+        - salt_radio_button: Радіокнопка для вибору алгоритму sha256+salt.
+        - blake_radio_button: Радіокнопка для вибору алгоритму BLAKE2b.
+        - sha521_radio_button: Радіокнопка для вибору алгоритму sha512.
+    - ClickableLabel:
+        - location_buttons: Кнопки з іконкою папки для відкриття діалогів вибору файлів.
+Функції:
+    - create_de_frag_page: Головна функція, що включає інтерфейс для введення шляхів до файлів, вибір алгоритмів хешування, тощо.
+    - update_push_button_state: Відповідає за активацію/деактивацію кнопки "Далі".
+    - open_file_dialog: Відкриває менеджер для вибору шифрованого файлу.
+    - radio_button_click: Змінює вибраний алгоритм хешування.
+    - start_decryption: Запускає процес дешифрування з урахуванням введеного пароля, солі та вибраного алгоритму.
+"""
 
 
 def create_de_frag_page(parent, files_name):
@@ -33,7 +56,6 @@ def create_de_frag_page(parent, files_name):
         location_fields.append(location_field)
 
     def update_push_button_state():
-        """Перевіряє, чи є текст хоча б у двох полях, і активує кнопку."""
         filled_fields = sum(1 for field in location_fields if field.text().strip())
         if filled_fields >= 2:
             push_button_forward.setStyleSheet(root.find(".//text[@id='style_push_button_start_frag']").text.strip())
@@ -48,18 +70,19 @@ def create_de_frag_page(parent, files_name):
     location_buttons = []
     for i in range(8):
         def open_file_dialog(index):
-            """Функція для відкриття діалогу вибору існуючого файлу."""
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
             file_path, _ = QFileDialog.getOpenFileName(
                 page,
                 "Виберіть файл для фрагменту",
-                "",  # Початковий шлях (за потреби можна вказати)
-                "All Files (*)",  # Фільтр файлів
+                "",
+                "All Files (*)",
                 options=options,
             )
             if file_path:
                 location_fields[index].setText(file_path)
+            else:
+                pass
 
         location_button = ClickableLabel(page)
         location_button.setGeometry(QtCore.QRect(850, 30 + i * 60, 71, 61))
@@ -99,13 +122,13 @@ def create_de_frag_page(parent, files_name):
     salt_radio_button.setStyleSheet(root.find(".//text[@id='style_radio_button']").text.strip())
     salt_radio_button.setObjectName("salt")
 
-    md5_radio_button = QtWidgets.QRadioButton(page)
-    md5_radio_button.setGeometry(QtCore.QRect(40, 220, 141, 17))
-    md5_radio_button.setFont(QtGui.QFont('', 11))
-    md5_radio_button.setText("BLAKE2b")
-    md5_radio_button.setChecked(True)
-    md5_radio_button.setObjectName("BLAKE2b")
-    md5_radio_button.setStyleSheet(root.find(".//text[@id='style_radio_button']").text.strip())
+    blake_radio_button = QtWidgets.QRadioButton(page)
+    blake_radio_button.setGeometry(QtCore.QRect(40, 220, 141, 17))
+    blake_radio_button.setFont(QtGui.QFont('', 11))
+    blake_radio_button.setText("BLAKE2b")
+    blake_radio_button.setChecked(True)
+    blake_radio_button.setObjectName("BLAKE2b")
+    blake_radio_button.setStyleSheet(root.find(".//text[@id='style_radio_button']").text.strip())
 
     sha521_radio_button = QtWidgets.QRadioButton(page)
     sha521_radio_button.setGeometry(QtCore.QRect(40, 260, 141, 17))
@@ -115,7 +138,7 @@ def create_de_frag_page(parent, files_name):
     sha521_radio_button.setStyleSheet(root.find(".//text[@id='style_radio_button']").text.strip())
 
     sha521_radio_button.toggled.connect(lambda: radio_button_click("sha512", sha521_radio_button.isChecked()))
-    md5_radio_button.toggled.connect(lambda: radio_button_click("BLAKE2b", md5_radio_button.isChecked()))
+    blake_radio_button.toggled.connect(lambda: radio_button_click("BLAKE2b", blake_radio_button.isChecked()))
     salt_radio_button.toggled.connect(lambda: radio_button_click("salt", salt_radio_button.isChecked()))
 
     def radio_button_click(selected_type, is_checked):
@@ -127,7 +150,7 @@ def create_de_frag_page(parent, files_name):
         case "sh":
             sha521_radio_button.setChecked(True)
         case "b2":
-            md5_radio_button.setChecked(True)
+            blake_radio_button.setChecked(True)
         case "ss":
             salt_radio_button.setChecked(True)
         case _:
@@ -135,22 +158,17 @@ def create_de_frag_page(parent, files_name):
 
     def start_decryption(password, salt):
         location_field_txt = []
-        for field in location_fields:
-            field_text = field.text().strip()
+        for file in location_fields:
+            field_text = file.text().strip()
             if field_text:
                 location_field_txt.append(field_text)
         file_name = os.path.basename(location_field_txt[0])
-        if file_name[:2] == "ss" or file_name[:2] == "b2" or file_name[:2] == "sh":
+        if file_name[:2] in ["ss", "b2", "sh"]:
             file_name = file_name[4:-1]
 
-        try:
-            decrypted_content = decrypt_data(encrypted_file_content(location_field_txt), password, type_hash, salt)
-            if save_decrypted_file(page, decrypted_content, str(file_name)):
-                parent.show_start_page()
-            else:
-                print("Saving failed")
-        except Exception as e:
-            print(f"An error occurred: {e}")
+        decrypted_content = decrypt_data(encrypted_file_content(location_field_txt), password, type_hash, salt)
+        if save_decrypted_file(page, decrypted_content, str(file_name)):
+            parent.show_start_page()
 
     push_button_forward.clicked.connect(lambda: open_password_salt_form(page, start_decryption, type_hash))
     update_push_button_state()

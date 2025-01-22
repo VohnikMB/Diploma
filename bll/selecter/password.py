@@ -1,4 +1,12 @@
-from ui.imports_ui import *
+from bll.bll_imports import *
+
+
+"""
+password.py. Файл, що містить функцію для вибору паролю з файлового носія.
+
+Функція:
+    - select_pass_file: Відкриває діалогове вікно для вибору файлу-ключа(відповідного формату), повертає його вміст.
+"""
 
 
 def select_pass_file():
