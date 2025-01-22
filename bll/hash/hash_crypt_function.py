@@ -68,7 +68,7 @@ def decrypt_data(encrypted_data, password, hash_type, salt=''):
             key = _hash_with_user_salt(password, salt)
             key = base64.urlsafe_b64encode(hashlib.sha256(key).digest()[:32])
 
-    # Дешифрування даних
+    # Розшифрування даних
     cipher_suite = Fernet(key)
     decrypted_data = cipher_suite.decrypt(encrypted_data)
     return decrypted_data
