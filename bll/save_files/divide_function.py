@@ -16,10 +16,10 @@ def divide_data(decrypted_data, fragments):
 def divide_files_name(fragments, hash_type, file_name):
     hash_in_name = None
     match hash_type:
-        case "sha521":
+        case "sha512":
             hash_in_name = "sh"
-        case "md5":
-            hash_in_name = "mb"
+        case "BLAKE2b":
+            hash_in_name = "b2"
         case "salt":
             hash_in_name = "ss"
     names = []

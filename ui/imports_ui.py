@@ -7,7 +7,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 import webbrowser
 import sys
 import os
-
+from functools import partial
 
 tree = ElementTree.parse('ui/texts.xml')
 root = tree.getroot()

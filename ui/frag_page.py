@@ -8,7 +8,7 @@ def create_frag_page(parent):
     page = QtWidgets.QWidget(parent)
     file_content = None
     file_name = None
-    type_hash = "md5"
+    type_hash = "BLAKE2b"
 
     # Додаємо зображення
     choose_file_img = ClickableLabel(page)
@@ -61,9 +61,9 @@ def create_frag_page(parent):
     md5_radio_button = QtWidgets.QRadioButton(page)
     md5_radio_button.setGeometry(QtCore.QRect(720, 215, 141, 17))
     md5_radio_button.setFont(QtGui.QFont('', 11))
-    md5_radio_button.setText("md5")
+    md5_radio_button.setText("BLAKE2b")
     md5_radio_button.setChecked(True)
-    md5_radio_button.setObjectName("md5")
+    md5_radio_button.setObjectName("BLAKE2b")
     md5_radio_button.setStyleSheet(root.find(".//text[@id='style_radio_button']").text.strip())
 
     sha521_radio_button = QtWidgets.QRadioButton(page)
@@ -73,8 +73,8 @@ def create_frag_page(parent):
     sha521_radio_button.setObjectName("sha512")
     sha521_radio_button.setStyleSheet(root.find(".//text[@id='style_radio_button']").text.strip())
 
-    sha521_radio_button.toggled.connect(lambda: radio_button_click("sha521", sha521_radio_button.isChecked()))
-    md5_radio_button.toggled.connect(lambda: radio_button_click("md5", md5_radio_button.isChecked()))
+    sha521_radio_button.toggled.connect(lambda: radio_button_click("sha512", sha521_radio_button.isChecked()))
+    md5_radio_button.toggled.connect(lambda: radio_button_click("BLAKE2b", md5_radio_button.isChecked()))
     salt_radio_button.toggled.connect(lambda: radio_button_click("salt", salt_radio_button.isChecked()))
 
     salt_line = QtWidgets.QLineEdit(page)

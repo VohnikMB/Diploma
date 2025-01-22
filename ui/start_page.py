@@ -1,4 +1,5 @@
 from ui.imports_ui import *
+from bll.selecter.select_files import *
 
 
 def setup_ui(self, page):
@@ -14,18 +15,18 @@ def setup_ui(self, page):
     page.resize(960, 660)
     self.central_widget = QtWidgets.QWidget(page)
 
+    self.de_frag = ClickableLabel(self.central_widget)
+    self.de_frag.setGeometry(QtCore.QRect(190, 210, 221, 201))
+    self.de_frag.setStyleSheet("image: url(ui/images/deFrag.png);")
+
+    self.de_frag.setText("")
+    self.de_frag.setObjectName("deFrag")
+
     self.frag = ClickableLabel(self.central_widget)
-    self.frag.setGeometry(QtCore.QRect(190, 210, 221, 201))
-    self.frag.setStyleSheet("image: url(ui/images/deFrag.png);")
-
+    self.frag.setGeometry(QtCore.QRect(540, 210, 221, 201))
+    self.frag.setStyleSheet("image: url(ui/images/frag.png);")
     self.frag.setText("")
-    self.frag.setObjectName("deFrag")
-
-    self.defrag = ClickableLabel(self.central_widget)
-    self.defrag.setGeometry(QtCore.QRect(540, 210, 221, 201))
-    self.defrag.setStyleSheet("image: url(ui/images/frag.png);")
-    self.defrag.setText("")
-    self.defrag.setObjectName("frag")
+    self.frag.setObjectName("frag")
 
     self.setting = QLabel(self.central_widget)
     self.setting.setGeometry(QtCore.QRect(875, 10, 41, 41))
@@ -50,8 +51,9 @@ def setup_ui(self, page):
     self.text_deFrag.setFont(font)
     self.text_deFrag.setLayoutDirection(QtCore.Qt.LeftToRight)
 
-    self.frag.clicked.connect(self.parent.show_de_frag_page)
-    self.defrag.clicked.connect(self.parent.show_frag_page)
+    self.de_frag.clicked.connect(lambda: de_cript_page())
+
+    self.frag.clicked.connect(self.parent.show_frag_page)
 
     self.info.clicked.connect(self.open_info_widget)
 
@@ -61,3 +63,8 @@ def setup_ui(self, page):
     self.text_frag.setText(fragment.text.strip())
 
     QtCore.QMetaObject.connectSlotsByName(page)
+
+    def de_cript_page():
+        files, m_bool = open_file_dialog()
+        if m_bool:
+            self.parent.show_de_frag_page(files)

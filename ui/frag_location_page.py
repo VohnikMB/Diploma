@@ -31,15 +31,6 @@ def create_frag_location_page(parent, slider, hash_type, data, file_name):
 
     location_buttons = []
     for i in range(slider):
-        location_button = ClickableLabel(page)
-        location_button.setGeometry(QtCore.QRect(820, 30 + i * 60, 71, 61))
-        location_button.setStyleSheet("image: url(ui/images/folder.png);")
-        location_button.setObjectName(f"folder_{i}")
-        location_buttons.append(location_button)
-
-        location_button.clicked.connect(lambda: open_file_dialog(i))
-        location_buttons.append(location_button)
-
         def open_file_dialog(index):
             """Функція для відкриття діалогу збереження окремого фрагменту."""
             options = QFileDialog.Options()
@@ -53,6 +44,16 @@ def create_frag_location_page(parent, slider, hash_type, data, file_name):
             )
             if file_path:
                 location_fields[index].setText(file_path)
+
+        location_button = ClickableLabel(page)
+        location_button.setGeometry(QtCore.QRect(820, 30 + i * 60, 71, 61))
+        location_button.setStyleSheet("image: url(ui/images/folder.png);")
+        location_button.setObjectName(f"folder_{i}")
+        location_buttons.append(location_button)
+
+        location_button.clicked.connect(partial(open_file_dialog, i))
+        location_buttons.append(location_button)
+
 
     def end_fun():
         """Фінальна функція збереження."""

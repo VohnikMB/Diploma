@@ -1,5 +1,4 @@
 /.venv/
-/save/
 /TestZone/
 /QT designer/
 .idea/
@@ -7,3 +6,4 @@
 *.qrc
 *.pyc
 __pycache__
+.gitignore
